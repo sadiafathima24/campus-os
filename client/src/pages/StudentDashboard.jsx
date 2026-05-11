@@ -369,7 +369,7 @@ function StudentDashboard() {
 
                           <a
                             key={material._id}
-                            href={`http://localhost:5000/uploads/${material.file}`}
+                            href={`https://campus-os-7fh1.onrender.com/uploads/${material.file}`}
                             target="_blank"
                             rel="noreferrer"
                             className="block bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-3 rounded-xl transition-all"

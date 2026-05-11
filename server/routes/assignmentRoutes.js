@@ -83,4 +83,39 @@ router.post(
   }
 );
 
+router.post(
+  "/grade/:id",
+  async (req, res) => {
+
+    try {
+
+      const assignment =
+        await Assignment.findById(
+          req.params.id
+        );
+
+      const submission =
+        assignment.submissions.id(
+          req.body.submissionId
+        );
+
+      submission.grade =
+        req.body.grade;
+
+      await assignment.save();
+
+      res.json({
+        message:
+          "Assignment graded",
+      });
+
+    } catch (error) {
+
+      res.status(500).json({
+        message: error.message,
+      });
+    }
+  }
+);
+
 module.exports = router;

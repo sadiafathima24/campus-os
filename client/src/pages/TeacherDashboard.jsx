@@ -173,27 +173,34 @@ function TeacherDashboard() {
   };
 
   const gradeAssignment = async (
-    assignmentId,
-    index
-  ) => {
+  assignmentId,
+  submissionId,
+  grade
+) => {
 
-    const grade = prompt(
-      "Enter Grade Out of 100"
-    );
-
-    if (!grade) return;
+  try {
 
     await API.post(
-      `/assignments/grade/${assignmentId}/${index}`,
+      `/assignments/grade/${assignmentId}`,
       {
+        submissionId,
         grade,
       }
     );
 
-    toast.success("Assignment Graded");
+    toast.success(
+      "Assignment graded"
+    );
 
     fetchAssignments();
-  };
+
+  } catch (error) {
+
+    toast.error(
+      "Grading failed"
+    );
+  }
+};
 
   const deleteCourse = async (id) => {
 
@@ -610,7 +617,7 @@ function TeacherDashboard() {
                           </p>
 
                           <a
-                            href={`http://localhost:5000/uploads/${submission.file}`}
+                            href={`https://campus-os-7fh1.onrender.com/uploads/${submission.file}`}
                             target="_blank"
                             rel="noreferrer"
                             className="text-blue-600 underline block mb-3"
