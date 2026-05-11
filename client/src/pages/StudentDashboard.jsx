@@ -368,14 +368,12 @@ function StudentDashboard() {
                         .map((material) => (
 
                           <a
-                            key={material._id}
-                            href={`https://campus-os-7fh1.onrender.com/uploads/${material.file}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="block bg-blue-50 hover:bg-blue-100 text-blue-600 px-4 py-3 rounded-xl transition-all"
-                          >
-                            {material.title}
-                          </a>
+  href={`https://campus-os-7fh1.onrender.com/uploads/${material.file}`}
+  download
+  className="block bg-sky-50 hover:bg-sky-100 text-sky-700 px-4 py-3 rounded-xl transition-all"
+>
+  Download Material
+</a>
                         ))}
 
                     </div>

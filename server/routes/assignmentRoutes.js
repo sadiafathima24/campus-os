@@ -20,7 +20,7 @@ router.post(
 
       res.status(201).json({
         message:
-          "Assignment created",
+          "Assignment created successfully",
       });
 
     } catch (error) {
@@ -32,22 +32,25 @@ router.post(
   }
 );
 
-router.get("/", async (req, res) => {
+router.get(
+  "/",
+  async (req, res) => {
 
-  try {
+    try {
 
-    const assignments =
-      await Assignment.find();
+      const assignments =
+        await Assignment.find();
 
-    res.json(assignments);
+      res.json(assignments);
 
-  } catch (error) {
+    } catch (error) {
 
-    res.status(500).json({
-      message: error.message,
-    });
+      res.status(500).json({
+        message: error.message,
+      });
+    }
   }
-});
+);
 
 router.post(
   "/submit/:id",
@@ -61,9 +64,19 @@ router.post(
           req.params.id
         );
 
+      if (!assignment) {
+
+        return res.status(404).json({
+          message:
+            "Assignment not found",
+        });
+      }
+
       assignment.submissions.push({
         student: req.body.student,
-        file: req.file.filename,
+        file: req.file
+          ? req.file.filename
+          : "",
         grade: null,
       });
 
@@ -71,7 +84,7 @@ router.post(
 
       res.json({
         message:
-          "Assignment submitted",
+          "Assignment submitted successfully",
       });
 
     } catch (error) {
@@ -94,10 +107,26 @@ router.post(
           req.params.id
         );
 
+      if (!assignment) {
+
+        return res.status(404).json({
+          message:
+            "Assignment not found",
+        });
+      }
+
       const submission =
         assignment.submissions.id(
           req.body.submissionId
         );
+
+      if (!submission) {
+
+        return res.status(404).json({
+          message:
+            "Submission not found",
+        });
+      }
 
       submission.grade =
         req.body.grade;
@@ -106,7 +135,7 @@ router.post(
 
       res.json({
         message:
-          "Assignment graded",
+          "Assignment graded successfully",
       });
 
     } catch (error) {

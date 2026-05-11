@@ -196,12 +196,13 @@ function TeacherDashboard() {
 
   } catch (error) {
 
+    console.log(error);
+
     toast.error(
       "Grading failed"
     );
   }
 };
-
   const deleteCourse = async (id) => {
 
     const confirmDelete = window.confirm(
@@ -617,13 +618,12 @@ function TeacherDashboard() {
                           </p>
 
                           <a
-                            href={`https://campus-os-7fh1.onrender.com/uploads/${submission.file}`}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-blue-600 underline block mb-3"
-                          >
-                            View Submission
-                          </a>
+  href={`https://campus-os-7fh1.onrender.com/uploads/${submission.file}`}
+  download
+  className="bg-sky-100 hover:bg-sky-200 text-sky-700 px-4 py-2 rounded-xl inline-block"
+>
+  Download Submission
+</a>
 
                           <p className="mb-4">
                             <strong>Grade:</strong>{" "}
