@@ -174,9 +174,13 @@ function TeacherDashboard() {
 
   const gradeAssignment = async (
   assignmentId,
-  submissionId,
-  grade
+  submissionId
 ) => {
+
+  const grade =
+    prompt("Enter grade");
+
+  if (!grade) return;
 
   try {
 
@@ -199,7 +203,7 @@ function TeacherDashboard() {
     console.log(error);
 
     toast.error(
-      "Grading failed"
+      "Grade failed"
     );
   }
 };
@@ -619,7 +623,8 @@ function TeacherDashboard() {
 
                           <a
   href={`https://campus-os-7fh1.onrender.com/uploads/${submission.file}`}
-  download
+  target="_blank"
+  rel="noreferrer"
   className="bg-sky-100 hover:bg-sky-200 text-sky-700 px-4 py-2 rounded-xl inline-block"
 >
   Download Submission
@@ -639,17 +644,17 @@ function TeacherDashboard() {
                               Graded
                             </button>
                           ) : (
-                            <button
-                              onClick={() =>
-                                gradeAssignment(
-                                  assignment._id,
-                                  index
-                                )
-                              }
-                              className="bg-green-500 hover:bg-green-600 text-gray-700 px-5 py-2 rounded-2xl"
-                            >
-                              Grade
-                            </button>
+                           <button
+  onClick={() =>
+    gradeAssignment(
+      assignment._id,
+      submission._id
+    )
+  }
+  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-xl"
+>
+  Grade
+</button>
                           )}
 
                         </div>

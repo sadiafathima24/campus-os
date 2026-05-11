@@ -17,17 +17,12 @@ const assignmentSchema = new mongoose.Schema({
   },
 
   submissions: [
-    {
-      student: String,
-
-      file: String,
-
-      grade: {
-        type: Number,
-        default: null,
-      },
-    },
-  ],
+  {
+    student: String,
+    file: String,
+    grade: String,
+  },
+],
 });
 
 module.exports = mongoose.model("Assignment", assignmentSchema);

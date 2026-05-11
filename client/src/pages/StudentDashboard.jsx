@@ -369,8 +369,9 @@ function StudentDashboard() {
 
                           <a
   href={`https://campus-os-7fh1.onrender.com/uploads/${material.file}`}
-  download
-  className="block bg-sky-50 hover:bg-sky-100 text-sky-700 px-4 py-3 rounded-xl transition-all"
+  target="_blank"
+  rel="noreferrer"
+  className="bg-sky-100 hover:bg-sky-200 text-sky-700 px-4 py-2 rounded-xl inline-block"
 >
   Download Material
 </a>
