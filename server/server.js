@@ -22,13 +22,12 @@ mongoose.connect(process.env.MONGO_URI)
 .catch((err) => console.log(err));
 
 app.use("/auth", authRoutes);
-app.use("/api/courses", courseRoutes);
-app.use("/api/assignments", assignmentRoutes);
-app.use("/api/events", eventRoutes);
-app.use("/api/fees", feeRoutes);
-app.use("/api/complaints", complaintRoutes);
-app.use("/api/materials", materialRoutes);
-
+app.use("/courses", courseRoutes);
+app.use("/assignments", assignmentRoutes);
+app.use("/materials", materialRoutes);
+app.use("/fees", feeRoutes);
+app.use("/complaints", complaintRoutes);
+app.use("/events", eventRoutes);
 
 app.get("/", (req, res) => {
   res.send("CampusOS Backend Running");
