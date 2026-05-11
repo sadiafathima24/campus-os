@@ -1,56 +1,48 @@
 const express = require("express");
+
 const router = express.Router();
-const multer = require("multer");
 
-const Assignment = require("../models/Assignment");
+const upload = require("../middleware/upload");
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
+const Assignment =
+  require("../models/Assignment");
 
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      Date.now() + "-" + file.originalname
-    );
-  },
-});
+router.post(
+  "/create",
+  async (req, res) => {
 
-const upload = multer({ storage });
+    try {
 
-router.post("/create", async (req, res) => {
-  try {
+      const assignment =
+        new Assignment(req.body);
 
-    const { course, title, description } = req.body;
+      await assignment.save();
 
-    const assignment = new Assignment({
-      course,
-      title,
-      description,
-    });
+      res.status(201).json({
+        message:
+          "Assignment created",
+      });
 
-    await assignment.save();
+    } catch (error) {
 
-    res.status(201).json({
-      message: "Assignment Created",
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
+      res.status(500).json({
+        message: error.message,
+      });
+    }
   }
-});
+);
 
 router.get("/", async (req, res) => {
+
   try {
 
-    const assignments = await Assignment.find();
+    const assignments =
+      await Assignment.find();
 
     res.json(assignments);
 
   } catch (error) {
+
     res.status(500).json({
       message: error.message,
     });
@@ -61,76 +53,34 @@ router.post(
   "/submit/:id",
   upload.single("file"),
   async (req, res) => {
+
     try {
 
-      const { student } = req.body;
-
-      const assignment = await Assignment.findById(
-        req.params.id
-      );
+      const assignment =
+        await Assignment.findById(
+          req.params.id
+        );
 
       assignment.submissions.push({
-        student,
+        student: req.body.student,
         file: req.file.filename,
+        grade: null,
       });
 
       await assignment.save();
 
       res.json({
-        message: "Assignment Submitted",
+        message:
+          "Assignment submitted",
       });
 
     } catch (error) {
+
       res.status(500).json({
         message: error.message,
       });
     }
   }
 );
-
-router.post(
-  "/grade/:id/:submissionIndex",
-  async (req, res) => {
-    try {
-
-      const { grade } = req.body;
-
-      const assignment = await Assignment.findById(
-        req.params.id
-      );
-
-      assignment.submissions[
-        req.params.submissionIndex
-      ].grade = grade;
-
-      await assignment.save();
-
-      res.json({
-        message: "Assignment Graded",
-      });
-
-    } catch (error) {
-      res.status(500).json({
-        message: error.message,
-      });
-    }
-  }
-);
-
-router.delete("/:id", async (req, res) => {
-  try {
-
-    await Assignment.findByIdAndDelete(req.params.id);
-
-    res.json({
-      message: "Assignment Deleted",
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      message: error.message,
-    });
-  }
-});
 
 module.exports = router;

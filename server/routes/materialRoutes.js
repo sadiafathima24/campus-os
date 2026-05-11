@@ -1,45 +1,41 @@
 const express = require("express");
+
 const router = express.Router();
-const multer = require("multer");
+
+const upload = require("../middleware/upload");
 
 const Material = require("../models/Material");
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      Date.now() + "-" + file.originalname
-    );
-  },
-});
-
-const upload = multer({ storage });
 
 router.post(
   "/upload",
   upload.single("file"),
   async (req, res) => {
+
     try {
 
-      const { course, title } = req.body;
-
-      const material = new Material({
-        course,
+      const {
         title,
-        file: req.file.filename,
-      });
+        course,
+        teacher,
+      } = req.body;
 
-      await material.save();
+      const newMaterial =
+        new Material({
+          title,
+          course,
+          teacher,
+          file: req.file.filename,
+        });
 
-      res.json({
-        message: "Material Uploaded",
+      await newMaterial.save();
+
+      res.status(201).json({
+        message:
+          "Material uploaded successfully",
       });
 
     } catch (error) {
+
       res.status(500).json({
         message: error.message,
       });
@@ -48,13 +44,16 @@ router.post(
 );
 
 router.get("/", async (req, res) => {
+
   try {
 
-    const materials = await Material.find();
+    const materials =
+      await Material.find();
 
     res.json(materials);
 
   } catch (error) {
+
     res.status(500).json({
       message: error.message,
     });
